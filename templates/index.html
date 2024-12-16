@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OpenAI GPT Chat</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #35372D;
+            color: #ededf2;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        #chat {
+            height: 400px;
+            overflow-y: scroll;
+            background-color: #444654;
+        }
+        .list-group-item {
+            border-radius: 5px;
+            background-color: #444654;
+            color: #ededf2;
+        }
+        .btn-primary {
+            background-color: #21232e;
+            border: none;
+        }
+        .form-control {
+            background-color: #444654;
+            color: #ededf2;
+            border: none;
+        }
+        .input-group {
+            margin-top: 20px;
+        }
+        .panel {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>OpenAI GPT Chat</h2>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">Chat Messages</div>
+            <div class="panel-body" id="chat">
+                <ul class="list-group"></ul>
+            </div>
+        </div>
+        <div class="input-group">
+            <input type="text" id="userInput" class="form-control" placeholder="Type a message...">
+            <button class="btn btn-primary" id="submit">Submit</button>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $("#submit").click(function(){
+            var userInput = $("#userInput").val();
+
+            if (userInput.trim() === "") return;
+
+            $.get("/get?msg=" + userInput, function(data){
+                $("#chat").append("<li class='list-group-item'><b>You:</b> " + userInput + "</li>");
+
+                $("#chat").append("<li class='list-group-item'><b>OpenAI:</b> " + data + "</li>");
+
+                $("#chat").scrollTop($("#chat")[0].scrollHeight);
+            });
+
+            $("#userInput").val("");
+        });
+    </script>
+</body>
+</html>
